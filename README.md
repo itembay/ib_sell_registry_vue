@@ -1,4 +1,4 @@
-# vue_item_registry
+# 아이템베이 오픈API Vue.js 
 
 > A Vue.js project
 
