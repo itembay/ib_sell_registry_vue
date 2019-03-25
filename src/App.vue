@@ -280,7 +280,7 @@
                                         <td class="li_wd1_6">{{sell.price}}</td>
                                         <td class="li_wd1_7">{{sell.tranStartDate}}</td>
                                     </tr>
-                                    <tr v-if="totalCount == 0 && loading == flase">
+                                    <tr v-if="totalCount == 0">
                                         <td colspan="7" style="height:440px;">리스트가 없습니다.</td>
                                     </tr>  
                                 </tbody>
