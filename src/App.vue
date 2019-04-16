@@ -1,5 +1,19 @@
 <template>
   <div id="app">   
+    <div id="member_header" style="width: auto;">
+        <a href="http://itembay.com" class="wbg member_logo"><span>아이템베이 바로가기</span></a>
+        <a href="javascript:;" class="wbg member_tg" @click="topNav=!topNav" :class="{close : topNav}">toggle</a>
+        <div class="top_nav_wrap">
+        <transition name="topNavLi" >           
+           <ul  class="member_tg_ul topNavLi" v-show="topNav">
+            <li><a href="http://www.itembay.com" title="아이템거래" target="_blank">아이템거래</a> &nbsp;|&nbsp;</li>
+            <li><a href="/mybay/mybayMainView" title="마이페이지" target="_blank">마이페이지</a> &nbsp;|&nbsp;</li>
+            <li><a href="/help/helpMainView" title="고객센터" target="_blank">고객센터</a></li>          
+          </ul>
+        </transition>
+        </div>
+     </div>
+    <div class="wrap">     
      <!-- login -->
      <transition name="fadeLogin">  
         <login @hideLoginBox="HideFade" :parentUrl="baseURI" v-if="hideLogin"></login>  
@@ -8,7 +22,16 @@
      <transition name="fade-table">
         <div class="reg_wrap" v-if="tokenShow">    
             <div class="token_area">       
-                <p class="logo">아이템베이</p>
+                <div class="top_area">
+                    <div class="top_lef_area">
+                        <h1>간편등록</h1> | 
+                        <span> 오픈API 샘플</span>
+                    </div>
+                    <div class="top_rig_area">                        
+                        <a href="#">API Documents</a>
+                        <a href="#">오픈 API 안내</a>
+                    </div>
+                </div>
                 <input type="text" v-model="token" v-if="!loadingShow"/>         
                 <p class="token_txt" v-if="loadingShow">
                     {{token}}
@@ -109,205 +132,206 @@
                         <Paginate v-show="totalCount !== 0 && loadingPage== false"
                             :page-count="pageNum"
                             :page-range="3"
-                            :click-handler="Mypage1"   
-                            :prev-text="'◀'"
-                            :next-text="'▶'"
-                            :container-class="'containerClass'"
-                            :forcePage="currentPage1"
-                        >
-                        </Paginate> 
-                    </div>
-                    <!--결제대기 중 물품-->
-                    <div class="my_cnt" v-if="tabOver == 2">
-                        <div class="my_table">
-                            <table class="cnt_list_wrap" id="cntListWrap2">
-                                <colgroup>
-                                    <col style="width:11%" />
-                                    <col style="width:11%" />
-                                    <col style="width:10%" />
-                                    <col style="width:31%" />
-                                    <col style="width:14%" />
-                                    <col style="width:10%" />
-                                    <col style="width:12%" />
-                                </colgroup>
-                                <thead class="cnt_list_title">
-                                    <tr>
-                                        <th class="li_wd1_1">거래번호</th>
-                                        <th class="li_wd1_2">물품번호</th>
-                                        <th class="li_wd1_3">종류</th>
-                                        <th class="li_wd1_4">물품제목</th>
-                                        <th class="li_wd1_5">수량</th>
-                                        <th class="li_wd1_6">가격</th>
-                                        <th class="li_wd1_7">마감일시</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="loading_area" v-if="loading">
-                                    <tr>
-                                        <td colspan="7">
-                                            <beat-loader class="loading_img" :color="color" :loading="loading" :size="10"></beat-loader>
-                                        </td>           
-                                    </tr>
-                                </tbody>  
-                                <tbody v-if="loading == false">
-                                    <tr v-for="sell in sellList2" :key="sell.index">
-                                        <td class="li_wd1_1">{{sell.tranSeq}}</td>
-                                        <td class="li_wd1_2">{{sell.itemSeq}}</td>
-                                        <td class="li_wd1_3">{{sell.itemType}}</td>
-                                        <td class="li_wd1_4">
-                                        {{sell.subject}}<br/><b>{{sell.gameName}} - {{sell.gameServerName}}</b>
-                                        </td>
-                                        <td class="li_wd1_5">{{sell.wantQuantity}}</td>
-                                        <td class="li_wd1_6">{{sell.price}}</td>
-                                        <td class="li_wd1_7">{{sell.tranEndDate}}</td>
-                                    </tr>
-                                    <tr v-if="totalCount == 0">
-                                        <td colspan="7" style="height:440px;">리스트가 없습니다.</td>
-                                    </tr>  
-                                </tbody>
-                            </table>
+                                :click-handler="Mypage1"   
+                                :prev-text="'◀'"
+                                :next-text="'▶'"
+                                :container-class="'containerClass'"
+                                :forcePage="currentPage1"
+                            >
+                            </Paginate> 
                         </div>
-                        <Paginate v-show="totalCount !== 0 && loadingPage == false"
-                            :page-count="pageNum"
-                            :page-range="3"
-                            :click-handler="Mypage2"   
-                            :prev-text="'◀'"
-                            :next-text="'▶'"
-                            :container-class="'containerClass'"
-                            :forcePage="currentPage2"
-                            >
-                        </Paginate>
-                    </div>
-                    <!--판매진행 중 물품-->
-                    <div class="my_cnt" v-if="tabOver == 3">
-                        <div class="my_table">
-                            <table class="cnt_list_wrap" id="cntListWrap3">
-                                <colgroup>
-                                    <col style="width:11%" />
-                                    <col style="width:11%" />
-                                    <col style="width:10%" />
-                                    <col style="width:31%" />
-                                    <col style="width:14%" />
-                                    <col style="width:10%" />
-                                    <col style="width:12%" />
-                                </colgroup>
-                                <thead class="cnt_list_title">
-                                    <tr>
-                                        <th class="li_wd1_1">거래번호</th>
-                                        <th class="li_wd1_2">물품번호</th>
-                                        <th class="li_wd1_3">종류</th>
-                                        <th class="li_wd1_4">물품제목</th>
-                                        <th class="li_wd1_5">수량</th>
-                                        <th class="li_wd1_6">가격</th>
-                                        <th class="li_wd1_7">마감일시</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="loading_area" v-if="loading">
-                                    <tr>
-                                        <td colspan="7">
-                                            <beat-loader class="loading_img" :color="color" :loading="loading" :size="10"></beat-loader>
-                                        </td>           
-                                    </tr>
-                                </tbody> 
-                                <tbody v-if="loading == false">
-                                    <tr v-for="sell in sellList3" :key="sell.index">
-                                        <td class="li_wd1_1">{{sell.tranSeq}}</td>
-                                        <td class="li_wd1_2">{{sell.itemSeq}}</td>
-                                        <td class="li_wd1_3">{{sell.itemType}}</td>
-                                        <td class="li_wd1_4">
-                                        {{sell.subject}}<br/><b>{{sell.gameName}} - {{sell.gameServerName}}</b>
-                                        </td>
-                                        <td class="li_wd1_5">{{sell.wantQuantity}}</td>
-                                        <td class="li_wd1_6">{{sell.price}}</td>
-                                        <td class="li_wd1_7">{{sell.tranEndDate}}</td>
-                                    </tr>
-                                    <tr v-if="totalCount == 0">
-                                        <td colspan="7" style="height:440px;">리스트가 없습니다.</td>
-                                    </tr>  
-                                </tbody>
-                            </table>
-                        </div>        
-                        <Paginate v-show="totalCount !== 0 && loadingPage == false"
-                            :page-count="pageNum"
-                            :page-range="3"
-                            :click-handler="Mypage3"   
-                            :prev-text="'◀'"
-                            :next-text="'▶'"
-                            :container-class="'containerClass'"
-                            :forcePage="currentPage3"                            
-                            >
-                        </Paginate>
-                    </div>
-                    <!--판매완료 된 물품-->
-                    <div class="my_cnt" v-if="tabOver == 4">
-                        <div class="my_table">
-                            <table class="cnt_list_wrap" id="cntListWrap4">
-                                <colgroup>
-                                     <col style="width:11%" />
-                                    <col style="width:11%" />
-                                    <col style="width:10%" />
-                                    <col style="width:31%" />
-                                    <col style="width:14%" />
-                                    <col style="width:10%" />
-                                    <col style="width:12%" />
-                                </colgroup>
-                                <thead class="cnt_list_title">
-                                    <tr>
-                                        <th class="li_wd1_1">거래번호</th>
-                                        <th class="li_wd1_2">물품번호</th>
-                                        <th class="li_wd1_3">종류</th>
-                                        <th class="li_wd1_4">물품제목</th>
-                                        <th class="li_wd1_5">수량</th>
-                                        <th class="li_wd1_6">가격</th>
-                                        <th class="li_wd1_7">결제완료일시</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="loading_area" v-if="loading">
-                                    <tr>
-                                        <td colspan="8">
-                                            <beat-loader class="loading_img" :color="color" :loading="loading" :size="10"></beat-loader>
-                                        </td>           
-                                    </tr>
-                                </tbody> 
-                                <tbody v-if="loading == false">
-                                    <tr v-for="sell in sellList4" :key="sell.index">
-                                        <td class="li_wd1_1">{{sell.tranSeq}}</td>
-                                        <td class="li_wd1_2">{{sell.itemSeq}}</td>
-                                        <td class="li_wd1_3">{{sell.itemType}}</td>
-                                        <td class="li_wd1_4">
-                                        {{sell.subject}}<br/><b>{{sell.gameName}} - {{sell.serverName}}</b>
-                                        </td>
-                                        <td class="li_wd1_5">{{sell.wantQuantity}}</td>
-                                        <td class="li_wd1_6">{{sell.price}}</td>
-                                        <td class="li_wd1_7">{{sell.tranStartDate}}</td>
-                                    </tr>
-                                    <tr v-if="totalCount == 0">
-                                        <td colspan="7" style="height:440px;">리스트가 없습니다.</td>
-                                    </tr>  
-                                </tbody>
-                            </table>
+                        <!--결제대기 중 물품-->
+                        <div class="my_cnt" v-if="tabOver == 2">
+                            <div class="my_table">
+                                <table class="cnt_list_wrap" id="cntListWrap2">
+                                    <colgroup>
+                                        <col style="width:11%" />
+                                        <col style="width:11%" />
+                                        <col style="width:10%" />
+                                        <col style="width:31%" />
+                                        <col style="width:14%" />
+                                        <col style="width:10%" />
+                                        <col style="width:12%" />
+                                    </colgroup>
+                                    <thead class="cnt_list_title">
+                                        <tr>
+                                            <th class="li_wd1_1">거래번호</th>
+                                            <th class="li_wd1_2">물품번호</th>
+                                            <th class="li_wd1_3">종류</th>
+                                            <th class="li_wd1_4">물품제목</th>
+                                            <th class="li_wd1_5">수량</th>
+                                            <th class="li_wd1_6">가격</th>
+                                            <th class="li_wd1_7">마감일시</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="loading_area" v-if="loading">
+                                        <tr>
+                                            <td colspan="7">
+                                                <beat-loader class="loading_img" :color="color" :loading="loading" :size="10"></beat-loader>
+                                            </td>           
+                                        </tr>
+                                    </tbody>  
+                                    <tbody v-if="loading == false">
+                                        <tr v-for="sell in sellList2" :key="sell.index">
+                                            <td class="li_wd1_1">{{sell.tranSeq}}</td>
+                                            <td class="li_wd1_2">{{sell.itemSeq}}</td>
+                                            <td class="li_wd1_3">{{sell.itemType}}</td>
+                                            <td class="li_wd1_4">
+                                            {{sell.subject}}<br/><b>{{sell.gameName}} - {{sell.gameServerName}}</b>
+                                            </td>
+                                            <td class="li_wd1_5">{{sell.wantQuantity}}</td>
+                                            <td class="li_wd1_6">{{sell.price}}</td>
+                                            <td class="li_wd1_7">{{sell.tranEndDate}}</td>
+                                        </tr>
+                                        <tr v-if="totalCount == 0">
+                                            <td colspan="7" style="height:440px;">리스트가 없습니다.</td>
+                                        </tr>  
+                                    </tbody>
+                                </table>
+                            </div>
+                            <Paginate v-show="totalCount !== 0 && loadingPage == false"
+                                :page-count="pageNum"
+                                :page-range="3"
+                                :click-handler="Mypage2"   
+                                :prev-text="'◀'"
+                                :next-text="'▶'"
+                                :container-class="'containerClass'"
+                                :forcePage="currentPage2"
+                                >
+                            </Paginate>
                         </div>
-                        <Paginate v-show="totalCount !== 0 && loadingPage == false" 
-                            :page-count="pageNum"
-                            :page-range="3"
-                            :click-handler="Mypage4"   
-                            :prev-text="'◀'"
-                            :next-text="'▶'"
-                            :container-class="'containerClass'"
-                            :forcePage="currentPage4"
-                            >
-                        </Paginate> 
-                    </div>
-                </div> 
-                <div class="how_img_wrap">
-                    <p class="how1">팝니다 게시판에 판매물품이 등록된 상태입니다.</p>
-                    <p class="how2">구매자의 구매 신청 후 결제하기 전 단계 입니다.</p>
-                    <p class="how3">구매자가 결제를 완료한 단계로 판매자에게 SMS가 발송되며, 구매자의 정보확인이 가능합니다.게임상에서 물품거래를 진행해 주세요.</p>
-                    <p class="how4">구매자에게 물품을 전달하고 판매확정 버튼을 클릭하세요.</p>
-                    <p class="how5">구매자가 구매확정을 완료하면 거래가 종료됩니다.</p>
-                </div>           
-            </div>
-        </div>
-    </transition>
+                        <!--판매진행 중 물품-->
+                        <div class="my_cnt" v-if="tabOver == 3">
+                            <div class="my_table">
+                                <table class="cnt_list_wrap" id="cntListWrap3">
+                                    <colgroup>
+                                        <col style="width:11%" />
+                                        <col style="width:11%" />
+                                        <col style="width:10%" />
+                                        <col style="width:31%" />
+                                        <col style="width:14%" />
+                                        <col style="width:10%" />
+                                        <col style="width:12%" />
+                                    </colgroup>
+                                    <thead class="cnt_list_title">
+                                        <tr>
+                                            <th class="li_wd1_1">거래번호</th>
+                                            <th class="li_wd1_2">물품번호</th>
+                                            <th class="li_wd1_3">종류</th>
+                                            <th class="li_wd1_4">물품제목</th>
+                                            <th class="li_wd1_5">수량</th>
+                                            <th class="li_wd1_6">가격</th>
+                                            <th class="li_wd1_7">마감일시</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="loading_area" v-if="loading">
+                                        <tr>
+                                            <td colspan="7">
+                                                <beat-loader class="loading_img" :color="color" :loading="loading" :size="10"></beat-loader>
+                                            </td>           
+                                        </tr>
+                                    </tbody> 
+                                    <tbody v-if="loading == false">
+                                        <tr v-for="sell in sellList3" :key="sell.index">
+                                            <td class="li_wd1_1">{{sell.tranSeq}}</td>
+                                            <td class="li_wd1_2">{{sell.itemSeq}}</td>
+                                            <td class="li_wd1_3">{{sell.itemType}}</td>
+                                            <td class="li_wd1_4">
+                                            {{sell.subject}}<br/><b>{{sell.gameName}} - {{sell.gameServerName}}</b>
+                                            </td>
+                                            <td class="li_wd1_5">{{sell.wantQuantity}}</td>
+                                            <td class="li_wd1_6">{{sell.price}}</td>
+                                            <td class="li_wd1_7">{{sell.tranEndDate}}</td>
+                                        </tr>
+                                        <tr v-if="totalCount == 0">
+                                            <td colspan="7" style="height:440px;">리스트가 없습니다.</td>
+                                        </tr>  
+                                    </tbody>
+                                </table>
+                            </div>        
+                            <Paginate v-show="totalCount !== 0 && loadingPage == false"
+                                :page-count="pageNum"
+                                :page-range="3"
+                                :click-handler="Mypage3"   
+                                :prev-text="'◀'"
+                                :next-text="'▶'"
+                                :container-class="'containerClass'"
+                                :forcePage="currentPage3"                            
+                                >
+                            </Paginate>
+                        </div>
+                        <!--판매완료 된 물품-->
+                        <div class="my_cnt" v-if="tabOver == 4">
+                            <div class="my_table">
+                                <table class="cnt_list_wrap" id="cntListWrap4">
+                                    <colgroup>
+                                        <col style="width:11%" />
+                                        <col style="width:11%" />
+                                        <col style="width:10%" />
+                                        <col style="width:31%" />
+                                        <col style="width:14%" />
+                                        <col style="width:10%" />
+                                        <col style="width:12%" />
+                                    </colgroup>
+                                    <thead class="cnt_list_title">
+                                        <tr>
+                                            <th class="li_wd1_1">거래번호</th>
+                                            <th class="li_wd1_2">물품번호</th>
+                                            <th class="li_wd1_3">종류</th>
+                                            <th class="li_wd1_4">물품제목</th>
+                                            <th class="li_wd1_5">수량</th>
+                                            <th class="li_wd1_6">가격</th>
+                                            <th class="li_wd1_7">결제완료일시</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="loading_area" v-if="loading">
+                                        <tr>
+                                            <td colspan="8">
+                                                <beat-loader class="loading_img" :color="color" :loading="loading" :size="10"></beat-loader>
+                                            </td>           
+                                        </tr>
+                                    </tbody> 
+                                    <tbody v-if="loading == false">
+                                        <tr v-for="sell in sellList4" :key="sell.index">
+                                            <td class="li_wd1_1">{{sell.tranSeq}}</td>
+                                            <td class="li_wd1_2">{{sell.itemSeq}}</td>
+                                            <td class="li_wd1_3">{{sell.itemType}}</td>
+                                            <td class="li_wd1_4">
+                                            {{sell.subject}}<br/><b>{{sell.gameName}} - {{sell.serverName}}</b>
+                                            </td>
+                                            <td class="li_wd1_5">{{sell.wantQuantity}}</td>
+                                            <td class="li_wd1_6">{{sell.price}}</td>
+                                            <td class="li_wd1_7">{{sell.tranStartDate}}</td>
+                                        </tr>
+                                        <tr v-if="totalCount == 0">
+                                            <td colspan="7" style="height:440px;">리스트가 없습니다.</td>
+                                        </tr>  
+                                    </tbody>
+                                </table>
+                            </div>
+                            <Paginate v-show="totalCount !== 0 && loadingPage == false" 
+                                :page-count="pageNum"
+                                :page-range="3"
+                                :click-handler="Mypage4"   
+                                :prev-text="'◀'"
+                                :next-text="'▶'"
+                                :container-class="'containerClass'"
+                                :forcePage="currentPage4"
+                                >
+                            </Paginate> 
+                        </div>
+                    </div> 
+                    <div class="how_img_wrap">
+                        <p class="how1">팝니다 게시판에 판매물품이 등록된 상태입니다.</p>
+                        <p class="how2">구매자의 구매 신청 후 결제하기 전 단계 입니다.</p>
+                        <p class="how3">구매자가 결제를 완료한 단계로 판매자에게 SMS가 발송되며, 구매자의 정보확인이 가능합니다.게임상에서 물품거래를 진행해 주세요.</p>
+                        <p class="how4">구매자에게 물품을 전달하고 판매확정 버튼을 클릭하세요.</p>
+                        <p class="how5">구매자가 구매확정을 완료하면 거래가 종료됩니다.</p>
+                    </div>           
+                </div>
+            </div>       
+        </transition>
+     </div>
   </div>
 </template>
 
@@ -349,10 +373,12 @@ export default {
             page : 1,
             loading : true,
             loadingPage : true,
-            color : '#9013fe'
+            color : '#9013fe',
+            topNav : false,
         }
     },
     methods:{
+       
         // login
         HideFade(tokenShow, hideLogin, msg){
             this.tokenShow = tokenShow;
@@ -423,19 +449,43 @@ body  {
     width:100%;
     min-width:1500px;
     margin:0;
-    padding:50px 0 0;
+    padding:0;
     background: #49d0a0;
     background: -moz-linear-gradient(-45deg, #49d0a0 0%, #7b60b3 62%, #7434c9 100%);
     background: -webkit-linear-gradient(-45deg, #49d0a0 0%,#7b60b3 62%,#7434c9 100%);
     background: linear-gradient(135deg, #49d0a0 0%,#7b60b3 62%,#7434c9 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#49d0a0', endColorstr='#7434c9',GradientType=1 );    
     }
-.logo {width:113px;height:26px;margin:0 auto 25px;background:url(https://www.itembaycorp.com/resources/images/common/ico_logo.png) 0 0 no-repeat;font-size:0;text-indent:-9999px}
-#app {position:relative;overflow:hidden;width:1500px;min-height:902px;margin:0 auto;}
+#app {overflow:hidden;width:100%;}
+.wrap {position:relative;width:1500px;min-height:902px;margin:50px auto 0;padding:0;}
+div#member_header {position:relative;height:20px; padding:20px 30px;background:#fff;border-bottom:1px solid #dedede;}
+div#member_header a.member_logo {display:block;width:285px;height:24px;background:url('http://trade.itembay.com/resources/image/design/main/20140411/logo20181108.png') no-repeat 0 0 !important}
+div#member_header a.member_tg {float:right;width:24px; height:24px;background-image:url('http://trade.itembay.com/resources/image/design/main/20140411/layout20141119.png');background-repeat:no-repeat;background-position:-976px -68px; text-indent:-9999px; font-size:0px;}
+div#member_header a.member_tg.close {background-position:-976px -91px !important; }
+div#member_header .top_nav_wrap {overflow:hidden;float:right;width:255px;margin-right:5px;}
+div#member_header ul.member_tg_ul {overflow:hidden;width:260px; margin:5px 10px 0 0; height:15px;list-style:none}
+div#member_header ul.member_tg_ul li {float:left;padding:0 2px;}
+a.wbg{ overflow:hidden}
+a.wbg span{ position:absolute;z-index:-1;top:-200px}
+.wbg{float:left;position:relative;zoom:1}
+
+.topNavLi {transition: all 0.6s ease;}
+.topNavLi-enter-active {transition:0s ease;transform: translateX(250px);}
+.topNavLi-leave-active {transition: all 0.6s ease;transform: translateX(280px);}
+
+
+.top_area {overflow:hidden;}
+.top_lef_area {overflow:hidden;float:left;margin:0 0 10px 5px;line-height:25px;}
+.top_lef_area h1 {float:left;margin-right:10px;font-family:notoKR;font-size:18px;color:#383838;}
+.top_lef_area span {height:24px;margin:0 0 0 5px;font-family:notoKR;font-size:15px;font-weight:500;color:#383838;}
+.top_rig_area {overflow:hidden;float:right;}
+.top_rig_area a {display:block;float:right;width:107px;height:26px;line-height:26px;margin-left:5px;font-family:dotum;font-size:12px;border:1px solid #d3d3d3;text-align:center;color:#787878;text-decoration:none;letter-spacing:0;}
+.top_rig_area a:hover {background:#495161;border:1px solid #495161;color:#fff;}
+
 .reg_wrap {float:left;width:700px;min-height:1115px;padding:15px 15px 0;margin:10px;background:#fff;border-radius:10px;}
 .fadeLogin-enter-active, .fadeLogin-leave-active {transition: opacity 0.7s ease-out;}
 .fadeLogin-enter, .fadeLogin-leave-to {opacity: 0;}
-.token_area {overflow:hidden;width:700px;clear:both;margin:40px auto 10px;}
+.token_area {overflow:hidden;width:700px;clear:both;margin:50px auto 10px;}
 .token_area .token_txt {width:700px;padding:10px;border-radius:5px;background:rgb(255, 255, 255, 1);border:1px solid #c5c5c5;word-break:break-all;text-align:justify;white-space:normal;color:#2d2d2d;box-sizing:border-box}
 .token_area input {float:left;width:610px;height:30px;padding:5px;text-indent:5px;border-radius:5px;background:rgb(255, 255, 255, 1);border:1px solid #c5c5c5;color:#2d2d2d;box-sizing:border-box;}
 .token_area button {

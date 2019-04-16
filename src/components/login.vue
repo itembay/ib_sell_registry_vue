@@ -22,6 +22,7 @@ export default {
     },
     methods: {
         GetToken(memberId, password){
+			
             this.$axios.post(`${this.parentUrl}common/token`, {memberId : this.memberId, password : this.password})
 			.then(res => { 
 				this.msg = res.data.message;
@@ -30,6 +31,8 @@ export default {
 			.catch(e => {
 				alert(e.response.data.message);
 			})			
+			
+
         },  
     }
 }
