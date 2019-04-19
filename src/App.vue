@@ -1,14 +1,14 @@
 <template>
   <div id="app">   
     <div id="member_header" style="width: auto;">
-        <a href="http://itembay.com" class="wbg member_logo"><span>아이템베이 바로가기</span></a>
+        <a href="http://www.itembay.com" class="wbg member_logo" target="_blank" title="아이템베이"><span>아이템베이 바로가기</span></a>
         <a href="javascript:;" class="wbg member_tg" @click="topNav=!topNav" :class="{close : topNav}">toggle</a>
         <div class="top_nav_wrap">
         <transition name="topNavLi" >           
            <ul  class="member_tg_ul topNavLi" v-show="topNav">
             <li><a href="http://www.itembay.com" title="아이템거래" target="_blank">아이템거래</a> &nbsp;|&nbsp;</li>
-            <li><a href="/mybay/mybayMainView" title="마이페이지" target="_blank">마이페이지</a> &nbsp;|&nbsp;</li>
-            <li><a href="/help/helpMainView" title="고객센터" target="_blank">고객센터</a></li>          
+            <li><a href="http://www.itembay.com/mybay/mybayMainView" title="마이페이지" target="_blank">마이페이지</a> &nbsp;|&nbsp;</li>
+            <li><a href="http://www.itembay.com/help/helpMainView" title="고객센터" target="_blank">고객센터</a></li>          
           </ul>
         </transition>
         </div>
@@ -28,8 +28,8 @@
                         <span> 오픈API 샘플</span>
                     </div>
                     <div class="top_rig_area">                        
-                        <a href="#">API Documents</a>
-                        <a href="#">오픈 API 안내</a>
+                        <a href="https://openapi.itembay.com/resources/swagger/index.html" target="_blank" title="API Documents">API Documents</a>
+                        <a href="http://www.itembay.com/openapi/main" target="_blank" title="오픈 API 안내">오픈 API 안내</a>
                     </div>
                 </div>
                 <input type="text" v-model="token" v-if="!loadingShow"/>         
@@ -321,6 +321,9 @@
                             </Paginate> 
                         </div>
                     </div> 
+                    <div class="banner_wrap">
+                        <a href="http://www.itembay.com/mybay/itemticket/mybayItemTicketMainView" target="_blank" title="물품추가등록권"><img src="./assets/bn1.jpg" alt="배너" /></a>
+                    </div>
                     <div class="how_img_wrap">
                         <p class="how1">팝니다 게시판에 판매물품이 등록된 상태입니다.</p>
                         <p class="how2">구매자의 구매 신청 후 결제하기 전 단계 입니다.</p>
@@ -538,8 +541,8 @@ a.wbg span{ position:absolute;z-index:-1;top:-200px}
 .my_tab_wrap li {position:relative;float:left;width:161px;height:35px;margin:0 1px;background:#fff;border:1px solid #c5c5c5;border-top-left-radius:5px;border-top-right-radius:5px;font-size:13px;font-weight:600;color:#979797;text-align:center;line-height:35px;box-sizing:border-box;cursor:pointer}
 .my_tab_wrap li.on {border:0 none;background:#9681d5;color:#fff;}
 .my_tab_wrap li:before {position:absolute;top:1px;left:1px;content:'';width:167px;height:33px;background: -moz-linear-gradient(-45deg,  rgba(255,255,255,1) 0%, rgba(255,255,255,0.3) 19%, rgba(255,255,255,0) 100%);background: -webkit-linear-gradient(-45deg,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.3) 19%,rgba(255,255,255,0) 100%);background: linear-gradient(135deg,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.3) 19%,rgba(255,255,255,0) 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 );border-radius:5px;text-shadow:1px 1px 1px #6d498e;}
-.my_cnt_wrap {overflow:hidden;width:652px;min-height:605px;margin:0 24px;}
-.my_cnt {margin-top:20px;}
+.my_cnt_wrap {overflow:hidden;width:652px;/*min-height:605px;*/margin:0 24px;}
+.my_cnt {margin-top:20px;margin-bottom:20px;}
 .my_table {min-height:490px}
 .cnt_list_wrap {overflow:hidden;width:100%;border-spacing:0;border-collapse:collapse;}
 .cnt_list_wrap .cnt_list_title {width:652px;height:38px;background:#e8e9f6;border-top:1px solid #c5c5c5;border-bottom:1px solid #c5c5c5;line-height:38px;list-style:none}
@@ -553,6 +556,7 @@ a.wbg span{ position:absolute;z-index:-1;top:-200px}
 .cnt_list_wrap tbody td.li_wd1_6 {color:#ff7b2b}
 .loading_area {height:440px;line-height:440px;text-align:center}
 .loading_area tr td {border-bottom:0 none}
+.banner_wrap {overflow:hidden;}
 .how_img_wrap {position:relative;overflow:hidden;width:692px;height:280px;margin:0 auto;background:url('./assets/sell_bg.jpg')}
 .how_img_wrap p {position:absolute;font-family:dotum;font-size:11px;color:#2d2d2d;text-align:justify;line-height:16px;}
 .how1 {top:170px;left:12px;width:120px}
