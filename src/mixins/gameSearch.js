@@ -2,9 +2,13 @@ export const gameSearch = {
     methods: {
           // 서버 검색  불러오기
           GameServer(event){
-            if(event.target.value == '0'){
+                
+                if(event.target.value == '3360' || event.target.value == '3361' || event.target.value == '3362'){
+                    this.etcGameType = true;
+                } else {
+                    this.etcGameType = false;
+                }
 
-            }else{
                 this.$axios.get(`${this.parentUrl}common/games/${event.target.value}/servers`, {
                     headers : {Authorization : 'Bearer ' +  this.tokenCode}                   
                 })
@@ -18,9 +22,9 @@ export const gameSearch = {
                     }                    
                 })
                 .catch(e => {
-                    alert(e.response.data.message);  
+                    alert(e.response.data.message);
                 })
-            }
+            
         },
     }
 }

@@ -45,11 +45,11 @@
             <div class="tb">
                 <p class="tb_title">종류</p>
                 <div class="tb_txt">
-                    <p class="trade_type1">
+                    <p class="trade_type1" v-if="etcGameType == false">
                         <input type="radio" :id="'rdbItemType_Money' + parentGameNum" :name="'rdbItemType' + parentGameNum" @change="selectCnt2" v-model="itemType"  v-bind:value="sellGameMoney" />
                         <label :for="'rdbItemType_Money' + parentGameNum">게임머니</label>
                     </p>
-                    <p class="trade_type1">
+                    <p class="trade_type1" v-if="etcGameType == false">
                         <input type="radio" :id="'rdbItemType_Item' + parentGameNum" :name="'rdbItemType' + parentGameNum" @change="selectCnt2" v-model="itemType" v-bind:value="sellItem" />
                         <label :for="'rdbItemType_Item' + parentGameNum">아이템</label>
                     </p>
@@ -113,7 +113,7 @@
                         <input type="text" class="title_inp" :id="'txtSubject' + parentGameNum" :name="'txtSubject' + parentGameNum" maxlength="50" size="70" v-model="subject" />
                     </div>
                 </div>
-                <div class="tb">
+                <div class="tb" v-if="etcGameType == false">
                     <p class="tb_title">판매자 캐릭터명</p>
                     <div class="tb_txt">
                         <input type="text" class="char_inp" :id="'txtSellCharacter' + parentGameNum" :name="'txtSellCharacter' + parentGameNum" maxlength="50" v-model="sellCharacter" />
@@ -182,6 +182,7 @@ import numeral from 'numeral';
             num : '',
             time : '',
             totalCount : 1,
+            etcGameType : false
           }
     },
     methods:{
